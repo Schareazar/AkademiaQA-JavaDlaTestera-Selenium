@@ -1,22 +1,38 @@
 package Tests;
 
+import POM.ContactUsPage;
+import POM.TopBar;
+import Utils.PageTitleUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ContactUsTest extends BaseTest {
 
+    private TopBar topBar;
+    private ContactUsPage contactUsPage;
+
+    @BeforeEach
+    public void setupTest() {
+        driver = new ChromeDriver();
+        driver.get(BASEPAGE);
+        Assertions.assertEquals(PageTitleUtils.HOMEPAGE_TITLE, driver.getTitle());
+        topBar = new TopBar(driver);
+        contactUsPage = new ContactUsPage(driver);
+    }
+
     @Test
     public void contactUsFormCantBeEmpty() {
-        driver.findElement(By.cssSelector("div#contact-link")).click();
-        driver.findElement(By.cssSelector("button#submitMessage")).click();
+        topBar.clickContactUsLink();
+        contactUsPage.clickSubmitButton();
 
-        Assertions.assertTrue(driver.findElement(By.cssSelector("div.alert")).isDisplayed());
+        Assertions.assertTrue(contactUsPage.isAlertDisplayed());
 
-        driver.findElement(By.cssSelector("input#email")).sendKeys("test@test.test");
-        driver.findElement(By.cssSelector("button#submitMessage")).click();
+        contactUsPage.provideEmail("test@test.test");
+        contactUsPage.clickSubmitButton();
 
-        Assertions.assertTrue(driver.findElement(By.cssSelector("div.alert")).isDisplayed());
+        Assertions.assertTrue(contactUsPage.isAlertDisplayed());
     }
 
 }

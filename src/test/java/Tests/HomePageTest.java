@@ -1,19 +1,28 @@
 package Tests;
 
+import POM.BestsellerPage;
+import Utils.PageTitleUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class HomePageTest extends BaseTest {
 
+    private BestsellerPage bestsellerPage;
+
+    @BeforeEach
+    public void setupTest() {
+        driver = new ChromeDriver();
+        driver.get(BASEPAGE);
+        Assertions.assertEquals(PageTitleUtils.HOMEPAGE_TITLE, driver.getTitle());
+        bestsellerPage = new BestsellerPage(driver);
+    }
+
     @Test
     public void bestsellerNamesAreDisplayed() {
-        List<WebElement> bestsellers = driver.findElements(By.cssSelector("ul#blockbestsellers .product-name"));
 
-        Assertions.assertTrue(bestsellers.stream()
-                .allMatch(element -> !element.getAttribute("textContent").isEmpty()));
+        Assertions.assertTrue(bestsellerPage.bestsellerNames().stream()
+                .noneMatch(String::isEmpty));
     }
 }
