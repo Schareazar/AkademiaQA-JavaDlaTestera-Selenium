@@ -1,5 +1,7 @@
 package Tests;
 
+import Model.Message;
+import Model.MessageSubject;
 import POM.ContactUsPage;
 import POM.TopBar;
 import Utils.PageTitleUtils;
@@ -27,12 +29,21 @@ public class ContactUsTest extends BaseTest {
         topBar.clickContactUsLink();
         contactUsPage.clickSubmitButton();
 
-        Assertions.assertTrue(contactUsPage.isAlertDisplayed());
+        Assertions.assertTrue(contactUsPage.isRedAlertDisplayed());
 
         contactUsPage.provideEmail("test@test.test");
         contactUsPage.clickSubmitButton();
 
-        Assertions.assertTrue(contactUsPage.isAlertDisplayed());
+        Assertions.assertTrue(contactUsPage.isRedAlertDisplayed());
     }
 
+    @Test
+    public void contactUsMessageCanBeSent() {
+        topBar.clickContactUsLink();
+        Message message = new Message(MessageSubject.CUSTOMER_SERVICE, "email@email.com", "123", "test");
+        contactUsPage.fillForm(message);
+        contactUsPage.clickSubmitButton();
+
+        Assertions.assertTrue(contactUsPage.isGreenAlertDisplayed());
+    }
 }
