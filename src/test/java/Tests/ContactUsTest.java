@@ -2,8 +2,7 @@ package Tests;
 
 import Model.Message;
 import Model.MessageSubject;
-import POM.ContactUsPage;
-import POM.TopBar;
+import POM.*;
 import Utils.PageTitleUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
